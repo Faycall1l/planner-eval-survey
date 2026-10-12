@@ -6,6 +6,7 @@ interface Paper {
   year: string;
   venue: string;
   benchmarks: string;
+  arxiv: string;
 }
 
 interface Props {
@@ -29,7 +30,11 @@ const { papers } = Astro.props;
     <tbody id="tableBody">
       {papers.map(paper => (
         <tr data-pid={paper.pid} onClick={`showDetail('${paper.pid}')`}>
-          <td><strong>{paper.name}</strong></td>
+          <td>{paper.arxiv ? (
+            <a href={`https://arxiv.org/abs/${paper.arxiv}`} target="_blank" rel="noopener noreferrer" class="paper-link" onclick="event.stopPropagation()"><strong>{paper.name}</strong></a>
+          ) : (
+            <strong>{paper.name}</strong>
+          )}</td>
           <td><span class={`class-tag c${paper.cls}`}>C{paper.cls}</span></td>
           <td class="year-text">{paper.year}</td>
           <td class="venue-text">{paper.venue || 'Preprint'}</td>
@@ -73,7 +78,7 @@ const { papers } = Astro.props;
       <tr data-pid="${p.pid}" onclick="showDetail('${p.pid}')">
           <td>
             ${p.arxiv
-              ? `<a href="https://arxiv.org/abs/${p.arxiv}" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;"><strong>${escHtml(p.name)}</strong></a>`
+              ? `<a href="https://arxiv.org/abs/${p.arxiv}" target="_blank" rel="noopener noreferrer" class="paper-link" onclick="event.stopPropagation()"><strong>${escHtml(p.name)}</strong></a>`
               : `<strong>${escHtml(p.name)}</strong>`
             }
           </td>
