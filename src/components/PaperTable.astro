@@ -1,0 +1,171 @@
+---
+interface Paper {
+  pid: string;
+  name: string;
+  cls: string;
+  year: string;
+  venue: string;
+  benchmarks: string;
+}
+
+interface Props {
+  papers: Paper[];
+}
+
+const { papers } = Astro.props;
+---
+
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th data-sort="name">Paper</th>
+        <th data-sort="cls">Class</th>
+        <th data-sort="year">Year</th>
+        <th data-sort="venue">Venue</th>
+        <th>Benchmarks</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody">
+      {papers.map(paper => (
+        <tr data-pid={paper.pid} onClick={`showDetail('${paper.pid}')`}>
+          <td><strong>{paper.name}</strong></td>
+          <td><span class={`class-tag c${paper.cls}`}>C{paper.cls}</span></td>
+          <td class="year-text">{paper.year}</td>
+          <td class="venue-text">{paper.venue || 'Preprint'}</td>
+          <td>{paper.benchmarks ? paper.benchmarks.split(';')[0] : 'N/A'}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<script>
+  import { papers } from '../data/papers.json';
+
+  let currentPapers = [...papers];
+  let sortKey = 'year';
+  let sortDir = 'desc';
+
+  const classNames: Record<string, string> = {
+    '1': 'Formal Plan Validity',
+    '2': 'Decomposition and Tool Orchestration',
+    '3': 'Embodied and Interactive Execution',
+    '4': 'Robustness and Recovery',
+    '5': 'Efficiency and Cost',
+    '6': 'Coordination Structure'
+  };
+
+  function escHtml(s: string): string {
+    const d = document.createElement('div');
+    d.textContent = s || '';
+    return d.innerHTML;
+  }
+
+  function renderTable(data: typeof papers) {
+    const tbody = document.getElementById('tableBody');
+    if (!tbody) return;
+    if (data.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5"><div class="no-results">No papers match the current filters.</div></td></tr>';
+      return;
+    }
+    tbody.innerHTML = data.map(p => `
+      <tr data-pid="${p.pid}" onclick="showDetail('${p.pid}')">
+        <td><strong>${escHtml(p.name)}</strong></td>
+        <td><span class="class-tag c${p.cls}">C${p.cls}</span></td>
+        <td class="year-text">${p.year}</td>
+        <td class="venue-text">${escHtml(p.venue || 'Preprint')}</td>
+        <td>${escHtml(p.benchmarks ? p.benchmarks.split(';')[0] : 'N/A')}</td>
+      </tr>
+    `).join('');
+  }
+
+  function sortData(data: typeof papers): typeof papers {
+    return [...data].sort((a, b) => {
+      let va: any = a[sortKey as keyof Paper];
+      let vb: any = b[sortKey as keyof Paper];
+      if (typeof va === 'string') { va = va.toLowerCase(); vb = vb.toLowerCase(); }
+      if (va < vb) return sortDir === 'asc' ? -1 : 1;
+      if (va > vb) return sortDir === 'asc' ? 1 : -1;
+      return 0;
+    });
+  }
+
+  function filterPapers() {
+    const search = (document.getElementById('searchInput') as HTMLInputElement)?.value.toLowerCase() || '';
+    const cls = (document.getElementById('classSelect') as HTMLSelectElement)?.value || '';
+    const year = (document.getElementById('yearSelect') as HTMLSelectElement)?.value || '';
+    const venue = (document.getElementById('venueSelect') as HTMLSelectElement)?.value || '';
+
+    let filtered = papers.filter(p => {
+      if (cls && p.cls !== cls) return false;
+      if (year && p.year !== year) return false;
+      if (venue === 'peer' && (!p.venue || p.venue.toLowerCase().includes('arxiv'))) return false;
+      if (venue === 'preprint' && p.venue && !p.venue.toLowerCase().includes('arxiv')) return false;
+      if (search) {
+        const text = (p.name + ' ' + (p.benchmarks || '')).toLowerCase();
+        if (!text.includes(search)) return false;
+      }
+      return true;
+    });
+
+    currentPapers = sortData(filtered);
+    renderTable(currentPapers);
+  }
+
+  (window as any).showDetail = (pid: string) => {
+    const p = papers.find(x => x.pid === pid);
+    if (!p) return;
+    const modal = document.getElementById('modalOverlay');
+    const title = document.getElementById('modalTitle');
+    const body = document.getElementById('modalBody');
+    if (!modal || !title || !body) return;
+
+    title.textContent = p.name;
+    body.innerHTML = `
+      <div class="detail-grid">
+        <div class="detail-item"><div class="detail-label">Class</div><div class="detail-value">Class ${p.cls}: ${classNames[p.cls] || 'Unknown'}</div></div>
+        <div class="detail-item"><div class="detail-label">Year</div><div class="detail-value">${p.year}</div></div>
+        <div class="detail-item"><div class="detail-label">Venue</div><div class="detail-value">${escHtml(p.venue || 'Preprint')}</div></div>
+        <div class="detail-item"><div class="detail-label">Benchmarks</div><div class="detail-value">${escHtml(p.benchmarks || 'N/A')}</div></div>
+        <div class="detail-item"><div class="detail-label">Repeat Runs</div><div class="detail-value">${p.runs}</div></div>
+        <div class="detail-item"><div class="detail-label">Seeds</div><div class="detail-value">${p.seeds}</div></div>
+        <div class="detail-item"><div class="detail-label">Prompts</div><div class="detail-value">${p.prompts}</div></div>
+        <div class="detail-item"><div class="detail-label">Code</div><div class="detail-value">${p.code}</div></div>
+        <div class="detail-item"><div class="detail-label">Dated Model</div><div class="detail-value">${p.modelver}</div></div>
+        <div class="detail-item"><div class="detail-label">Coordination Metric</div><div class="detail-value">${p.coord_metric}</div></div>
+      </div>
+      <div class="finding-box">
+        <h4>Key Finding</h4>
+        <p>${escHtml(p.finding || 'N/A')}</p>
+      </div>
+    `;
+    modal.classList.add('active');
+  };
+
+  (window as any).closeModal = (e: Event) => {
+    if (!e || (e.target as HTMLElement).id === 'modalOverlay') {
+      document.getElementById('modalOverlay')?.classList.remove('active');
+    }
+  };
+
+  window.addEventListener('search', filterPapers);
+  window.addEventListener('filter', filterPapers);
+
+  document.querySelectorAll('th[data-sort]').forEach(th => {
+    th.addEventListener('click', () => {
+      const key = th.getAttribute('data-sort') as string;
+      if (sortKey === key) {
+        sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+      } else {
+        sortKey = key;
+        sortDir = 'asc';
+      }
+      filterPapers();
+    });
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') (window as any).closeModal();
+  });
+</script>

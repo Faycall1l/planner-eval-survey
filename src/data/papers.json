@@ -57,7 +57,7 @@
     "m_robust": "True",
     "coord_metric": "N",
     "benchmarks": "SimFleet Valencia (20-day, 320 agents; normal and taxi-strike scenarios)",
-    "finding": "full text via Europe PMC; memory ablation under 80% taxi strike: late arrivals 34.25% (no planning) to 14.75% (full); single simulation per condition; several open models failed to produce valid struc"
+    "finding": "full text via Europe PMC; memory ablation under 80% taxi strike: late arrivals 34.25% (no planning) to 14.75% (full); single simulation per condition; several open models failed to produce valid structured plans"
   },
   {
     "pid": "w12",
@@ -317,7 +317,7 @@
     "m_robust": "False",
     "coord_metric": "N",
     "benchmarks": "TDW-MAT;C-WAH",
-    "finding": "method appears under an earlier name (LEAPlan) in its own result tables; REVECA TDW-MAT score copied because code unavailable; on C-WAH needs more steps than REVECA (60.5 vs 49.1) while using 24% of t"
+    "finding": "method appears under an earlier name (LEAPlan) in its own result tables; REVECA TDW-MAT score copied because code unavailable; on C-WAH needs more steps than REVECA (60.5 vs 49.1) while using 24% of tokens"
   },
   {
     "pid": "w28",
@@ -657,7 +657,7 @@
     "m_robust": "False",
     "coord_metric": "Y",
     "benchmarks": "MAP-THOR;Search & Rescue",
-    "finding": "ELIGIBLE under interacting-roles rule (closed-loop correct/verify roles); search-and-rescue scenes over 5 seeds; GPT-4V required: other VLMs degrade; benchmark later found to contain ground-truth erro"
+    "finding": "ELIGIBLE under interacting-roles rule (closed-loop correct/verify roles); search-and-rescue scenes over 5 seeds; GPT-4V required: other VLMs degrade; benchmark later found to contain ground-truth errors (Scale-Plan)"
   },
   {
     "pid": "w56",
@@ -917,7 +917,7 @@
     "m_robust": "True",
     "coord_metric": "N",
     "benchmarks": "LLaMAR / AI2-THOR FloorPlan1 (3 tasks)",
-    "finding": "252 runs, 5-10 repetitions; injecting one agent makes teammates act adversarially in up to 100% of runs; multi-agent baseline SR 0.40 vs single 0.70; original GPT-4V backend deprecated, so GPT-4o-mini"
+    "finding": "252 runs, 5-10 repetitions; injecting one agent makes teammates act adversarially in up to 100% of runs; multi-agent baseline SR 0.40 vs single 0.70; original GPT-4V backend deprecated, so GPT-4o-mini substituted"
   },
   {
     "pid": "f122",
@@ -997,7 +997,7 @@
     "m_robust": "False",
     "coord_metric": "Y",
     "benchmarks": "CalBench (90 tasks)",
-    "finding": "only 358 of 630 agent-game seats completed; message volume does not predict lower excess cost; privacy-preserving silence harms fairness; non-LLM reference protocols as baselines; model identifiers li"
+    "finding": "only 358 of 630 agent-game seats completed; message volume does not predict lower excess cost; privacy-preserving silence harms fairness; non-LLM reference protocols as baselines; model identifiers listed"
   },
   {
     "pid": "f129",
@@ -1017,7 +1017,7 @@
     "m_robust": "False",
     "coord_metric": "Y",
     "benchmarks": "alem (Craftax-based)",
-    "finding": "13 LLMs, 20/10 seeds with 95% bootstrap CIs; GPT-5.4-High strong base reward but low coordination reward; removing communication is the largest coordination drop; mixed teams perform at the average of"
+    "finding": "13 LLMs, 20/10 seeds with 95% bootstrap CIs; GPT-5.4-High strong base reward but low coordination reward; removing communication is the largest coordination drop; mixed teams perform at the average of members"
   },
   {
     "pid": "f13",
@@ -1077,7 +1077,7 @@
     "m_robust": "False",
     "coord_metric": "N",
     "benchmarks": "GAIA (val)",
-    "finding": "69.70% GAIA (pass@3 GPT-4o); planner failures are the largest agent-specific error source (21.15%); training planner only 45.45 vs workers only 31.51; leaderboard numbers reused for external systems; "
+    "finding": "69.70% GAIA (pass@3 GPT-4o); planner failures are the largest agent-specific error source (21.15%); training planner only 45.45 vs workers only 31.51; leaderboard numbers reused for external systems; leaked answers blocked"
   },
   {
     "pid": "f149",
@@ -1137,7 +1137,7 @@
     "m_robust": "False",
     "coord_metric": "N",
     "benchmarks": "custom 24 home-hazard scenarios",
-    "finding": "GPT-4/Claude-2 pairwise plan rankings agree with expert ranking 75.7% (drops for groups of 4-6); judges agree most with their own model family; GPT-3.5 generator + Claude-2 evaluator beats standalone "
+    "finding": "GPT-4/Claude-2 pairwise plan rankings agree with expert ranking 75.7% (drops for groups of 4-6); judges agree most with their own model family; GPT-3.5 generator + Claude-2 evaluator beats standalone GPT-4"
   },
   {
     "pid": "f151",
@@ -1317,7 +1317,7 @@
     "m_robust": "True",
     "coord_metric": "N",
     "benchmarks": "nuScenes via AgentDriver;AgentThink",
-    "finding": "poisoned tool descriptions hijack one agent and cascade to the planning output; ASR 86.3+-3.0% (GPT-3.5), 85.6% (GPT-4), 90.0% (LLaMA 3); five seeds over insertion positions; evades prompt- and agent-"
+    "finding": "poisoned tool descriptions hijack one agent and cascade to the planning output; ASR 86.3+-3.0% (GPT-3.5), 85.6% (GPT-4), 90.0% (LLaMA 3); five seeds over insertion positions; evades prompt- and agent-level defenses"
   },
   {
     "pid": "f212",
@@ -1437,7 +1437,7 @@
     "m_robust": "False",
     "coord_metric": "N",
     "benchmarks": "Text2World;CWMB;ByteSized32",
-    "finding": "SOTA on PDDL and code world-model generation with GPT-4.1-mini and Llama-3.1-8B; GPT-4o judge disagrees with humans on winnability so human scores are primary; 10-gram contamination check of retrieved"
+    "finding": "SOTA on PDDL and code world-model generation with GPT-4.1-mini and Llama-3.1-8B; GPT-4o judge disagrees with humans on winnability so human scores are primary; 10-gram contamination check of retrieved web content"
   },
   {
     "pid": "f263",
@@ -1457,7 +1457,7 @@
     "m_robust": "False",
     "coord_metric": "N",
     "benchmarks": "MAT2-THOR (49 tasks, cleaned MAT-THOR)",
-    "finding": "found missing/incorrect ground-truth goals and duplicate tasks in MAT-THOR and released a cleaned version; +25 pts task completion over LaMMA-P (GPT-5.2); structured pipelines trade planning time for "
+    "finding": "found missing/incorrect ground-truth goals and duplicate tasks in MAT-THOR and released a cleaned version; +25 pts task completion over LaMMA-P (GPT-5.2); structured pipelines trade planning time for quality"
   },
   {
     "pid": "f265",
@@ -1477,7 +1477,7 @@
     "m_robust": "False",
     "coord_metric": "N",
     "benchmarks": "NYU CTF Bench;Cybench;HackTheBox",
-    "finding": "22.0% NYU CTF, 22.5% Cybench, 44.0% HTB; re-ran baseline with newer model versions and re-evaluated with the older Claude snapshot to match EnIGMA; EnIGMA scored from its released transcripts; dated m"
+    "finding": "22.0% NYU CTF, 22.5% Cybench, 44.0% HTB; re-ran baseline with newer model versions and re-evaluated with the older Claude snapshot to match EnIGMA; EnIGMA scored from its released transcripts; dated model snapshots given"
   },
   {
     "pid": "f27",
@@ -1537,7 +1537,7 @@
     "m_robust": "True",
     "coord_metric": "N",
     "benchmarks": "GAIA;32,000 marketplace agent descriptions",
-    "finding": "one manipulated worker description drops task success 84.31% -> 37.25% or adds >111% tokens/time; 89.73% of marketplace descriptions lack input specs; plan metrics judged by LLM (robust across four ev"
+    "finding": "one manipulated worker description drops task success 84.31% -> 37.25% or adds >111% tokens/time; 89.73% of marketplace descriptions lack input specs; plan metrics judged by LLM (robust across four evaluators, no human check)"
   },
   {
     "pid": "f288",
@@ -1557,7 +1557,7 @@
     "m_robust": "False",
     "coord_metric": "Y",
     "benchmarks": "C-WAH;TDW-MAT",
-    "finding": "beats communication-centric baselines at comparable tokens; physical-only and communication-only variants both worse; 12-person user study; system LLM modules (not an evaluation judge) checked against"
+    "finding": "beats communication-centric baselines at comparable tokens; physical-only and communication-only variants both worse; 12-person user study; system LLM modules (not an evaluation judge) checked against human experts"
   },
   {
     "pid": "f29",
@@ -1597,7 +1597,7 @@
     "m_robust": "False",
     "coord_metric": "Y",
     "benchmarks": "SPIN-Bench (PDDL, board games, Hanabi, Diplomacy)",
-    "finding": "no LLM reaches the first quartile of human Hanabi scores; o1 drops 16.4 -> 14.2 from 2 to 5 players; Diplomacy with vs without negotiation; Claude 3.7 negotiation annotations agree 91.7-100% with thre"
+    "finding": "no LLM reaches the first quartile of human Hanabi scores; o1 drops 16.4 -> 14.2 from 2 to 5 players; Diplomacy with vs without negotiation; Claude 3.7 negotiation annotations agree 91.7-100% with three human annotators"
   },
   {
     "pid": "f302",
@@ -1897,7 +1897,7 @@
     "m_robust": "False",
     "coord_metric": "N",
     "benchmarks": "25 CTF tasks (5 categories)",
-    "finding": "multi-agent beats a single-agent baseline under matched budgets and tool access across four backends, with lower variance; dataset, implementation and logs released; held out first, read by Claude for"
+    "finding": "multi-agent beats a single-agent baseline under matched budgets and tool access across four backends, with lower variance; dataset, implementation and logs released; held out first, read by Claude for eligibility and evaluation-method coding only"
   },
   {
     "pid": "f414",
@@ -1937,7 +1937,7 @@
     "m_robust": "True",
     "coord_metric": "N",
     "benchmarks": "custom: 4 planning scenarios, 4 injection types",
-    "finding": "3,479 episodes, 9 LLMs, 95% CIs; GPT-5 highest attack success 0.68; same-backbone critic approves corrupted plans; heterogeneous reference planner raises detection 0.00 -> 0.71-1.00; two cross-family "
+    "finding": "3,479 episodes, 9 LLMs, 95% CIs; GPT-5 highest attack success 0.68; same-backbone critic approves corrupted plans; heterogeneous reference planner raises detection 0.00 -> 0.71-1.00; two cross-family LLM judges, no human check"
   },
   {
     "pid": "f432",
@@ -1957,7 +1957,7 @@
     "m_robust": "True",
     "coord_metric": "N",
     "benchmarks": "AssetOpsBench (141 queries)",
-    "finding": "median of three runs; LLM inference + orchestration >90% of latency; no external-framework baseline and correctness scored manually on a small subset (both stated as limitations); headline is latency,"
+    "finding": "median of three runs; LLM inference + orchestration >90% of latency; no external-framework baseline and correctness scored manually on a small subset (both stated as limitations); headline is latency, recoded to C5"
   },
   {
     "pid": "f463",
@@ -1997,7 +1997,7 @@
     "m_robust": "False",
     "coord_metric": "N",
     "benchmarks": "own benchmark of 14 recent vulnerabilities (post knowledge cutoff)",
-    "finding": "pass@5 of 42% with GPT-4, beating a single agent without task description and open-source scanners (0%); open models had no success; cost per run and per success reported; held out first, read by Clau"
+    "finding": "pass@5 of 42% with GPT-4, beating a single agent without task description and open-source scanners (0%); open models had no success; cost per run and per success reported; held out first, read by Claude for eligibility and evaluation-method coding only"
   },
   {
     "pid": "f477",
@@ -2337,7 +2337,7 @@
     "m_robust": "True",
     "coord_metric": "Y",
     "benchmarks": "GAIA;AssistantBench;WebVoyager;WebGames",
-    "finding": "simulated users (stronger LLM or side information) raise GAIA accuracy toward human level; notes that WebVoyager evaluation practice (human vs LLM judges, task filtering) differs across prior work; ba"
+    "finding": "simulated users (stronger LLM or side information) raise GAIA accuracy toward human level; notes that WebVoyager evaluation practice (human vs LLM judges, task filtering) differs across prior work; baselines taken from leaderboards and papers"
   },
   {
     "pid": "f63",

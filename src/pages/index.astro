@@ -1,0 +1,19 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SearchBar from '../components/SearchBar.astro';
+import FilterBar from '../components/FilterBar.astro';
+import PaperTable from '../components/PaperTable.astro';
+import PaperModal from '../components/PaperModal.astro';
+import StatsGrid from '../components/StatsGrid.astro';
+import { papers } from '../data/papers.json';
+---
+
+<Layout title="Multi-Agent Planning Evaluation Corpus">
+  <div class="container">
+    <StatsGrid papers={papers} />
+    <SearchBar />
+    <FilterBar />
+    <PaperTable papers={papers} />
+  </div>
+  <PaperModal />
+</Layout>
