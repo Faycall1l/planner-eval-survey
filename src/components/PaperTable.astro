@@ -118,6 +118,8 @@ const { papers } = Astro.props;
     renderTable(currentPapers);
   }
 
+  (window as any).getFilteredPapers = () => currentPapers;
+
   (window as any).showDetail = (pid: string) => {
     const p = papers.find(x => x.pid === pid);
     if (!p) return;

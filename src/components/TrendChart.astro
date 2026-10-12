@@ -1,0 +1,79 @@
+---
+---
+
+<div class="trend-section">
+  <h2>Reporting Trends by Year</h2>
+  <p class="trend-subtitle">Percentage of papers reporting each protocol item</p>
+  <div class="trend-chart-wrap" id="trendChart"></div>
+  <div class="trend-legend" id="trendLegend"></div>
+</div>
+
+<script>
+  interface Paper {
+    pid: string;
+    year: string;
+    runs: string;
+    seeds: string;
+    prompts: string;
+    code: string;
+    modelver: string;
+    coord_metric: string;
+  }
+
+  const papers: Paper[] = JSON.parse(document.getElementById('papers-data').textContent);
+
+  const years = ['2023', '2024', '2025', '2026'];
+  const items = [
+    { key: 'runs', label: 'Repeat Runs', color: '#2563eb', reported: (p: Paper) => p.runs === 'True' },
+    { key: 'seeds', label: 'Seeds', color: '#dc2626', reported: (p: Paper) => p.seeds === 'True' },
+    { key: 'prompts', label: 'Prompts', color: '#16a34a', reported: (p: Paper) => p.prompts === 'True' },
+    { key: 'code', label: 'Code', color: '#d97706', reported: (p: Paper) => p.code === 'True' },
+    { key: 'modelver', label: 'Dated Model', color: '#7c3aed', reported: (p: Paper) => p.modelver === 'True' },
+    { key: 'coord_metric', label: 'Coordination Metric', color: '#0891b2', reported: (p: Paper) => p.coord_metric === 'Y' }
+  ];
+
+  const W = 760;
+  const H = 320;
+  const M = { top: 20, right: 20, bottom: 40, left: 50 };
+  const iw = W - M.left - M.right;
+  const ih = H - M.top - M.bottom;
+
+  const x = (i: number) => M.left + (i / (years.length - 1)) * iw;
+  const y = (v: number) => M.top + ih - (v / 100) * ih;
+
+  const byYear = years.map(yr => papers.filter(p => p.year === yr));
+  const pct = (list: Paper[], fn: (p: Paper) => boolean) =>
+    list.length ? (list.filter(fn).length / list.length) * 100 : 0;
+
+  let svg = `<svg viewBox="0 0 ${W} ${H}" class="trend-svg" role="img" aria-label="Reporting trends by year">`;
+
+  for (let g = 0; g <= 100; g += 25) {
+    svg += `<line x1="${M.left}" y1="${y(g)}" x2="${W - M.right}" y2="${y(g)}" class="grid-line"/>`;
+    svg += `<text x="${M.left - 8}" y="${y(g) + 4}" class="axis-label" text-anchor="end">${g}%</text>`;
+  }
+
+  years.forEach((yr, i) => {
+    svg += `<text x="${x(i)}" y="${H - M.bottom + 22}" class="axis-label" text-anchor="middle">${yr} (${byYear[i].length})</text>`;
+  });
+
+  items.forEach(item => {
+    const pts = byYear.map((list, i) => `${x(i)},${y(pct(list, item.reported))}`).join(' ');
+    svg += `<polyline points="${pts}" fill="none" stroke="${item.color}" stroke-width="2.5"/>`;
+    byYear.forEach((list, i) => {
+      const v = pct(list, item.reported);
+      svg += `<circle cx="${x(i)}" cy="${y(v)}" r="4" fill="${item.color}"><title>${item.label} ${years[i]}: ${v.toFixed(0)}%</title></circle>`;
+    });
+  });
+
+  svg += '</svg>';
+
+  const chartEl = document.getElementById('trendChart');
+  if (chartEl) chartEl.innerHTML = svg;
+
+  const legendEl = document.getElementById('trendLegend');
+  if (legendEl) {
+    legendEl.innerHTML = items.map(item =>
+      `<span class="legend-item"><span class="legend-swatch" style="background:${item.color}"></span>${item.label}</span>`
+    ).join('');
+  }
+</script>

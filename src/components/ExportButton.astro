@@ -1,0 +1,28 @@
+---
+---
+
+<button class="btn" id="exportBtn">Export CSV</button>
+
+<script>
+  const exportBtn = document.getElementById('exportBtn') as HTMLButtonElement;
+
+  function escCsv(v: string): string {
+    if (/[",\n]/.test(v)) return '"' + v.replace(/"/g, '""') + '"';
+    return v;
+  }
+
+  exportBtn.addEventListener('click', () => {
+    const fallback = JSON.parse(document.getElementById('papers-data').textContent);
+    const papers = ((window as any).getFilteredPapers?.() ?? fallback) as Record<string, any>[];
+    const header = ['pid', 'name', 'class', 'year', 'venue', 'arxiv', 'benchmarks', 'runs', 'seeds', 'prompts', 'code', 'modelver', 'coord_metric', 'finding'];
+    const rows = papers.map(p => header.map(k => escCsv(String(p[k] ?? ''))).join(','));
+    const csv = [header.join(','), ...rows].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'planner-eval-papers.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+</script>

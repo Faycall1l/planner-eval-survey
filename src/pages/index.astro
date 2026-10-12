@@ -5,6 +5,7 @@ import FilterBar from '../components/FilterBar.astro';
 import PaperTable from '../components/PaperTable.astro';
 import PaperModal from '../components/PaperModal.astro';
 import StatsGrid from '../components/StatsGrid.astro';
+import TrendChart from '../components/TrendChart.astro';
 import papers from '../data/papers.json';
 ---
 
@@ -13,6 +14,7 @@ import papers from '../data/papers.json';
     <StatsGrid papers={papers} />
     <SearchBar />
     <FilterBar />
+    <TrendChart />
     <PaperTable papers={papers} />
   </div>
   <PaperModal />
