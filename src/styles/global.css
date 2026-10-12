@@ -86,6 +86,8 @@ body {
   flex-wrap: wrap;
   gap: 12px;
   align-items: center;
+  position: relative;
+  z-index: 1;
 }
 
 .search-input {
@@ -96,6 +98,8 @@ body {
   border-radius: var(--radius);
   font-size: 0.875rem;
   transition: border-color 0.15s, box-shadow 0.15s;
+  position: relative;
+  z-index: 2;
 }
 
 .search-input:focus {
@@ -112,6 +116,8 @@ body {
   background: var(--bg);
   cursor: pointer;
   min-width: 180px;
+  position: relative;
+  z-index: 2;
 }
 
 .filter-select:focus {
