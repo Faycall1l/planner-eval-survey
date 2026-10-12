@@ -41,7 +41,7 @@ const { papers } = Astro.props;
 </div>
 
 <script>
-  import { papers } from '../data/papers.json';
+  const papers = JSON.parse(document.getElementById('papers-data').textContent);
 
   let currentPapers = [...papers];
   let sortKey = 'year';
