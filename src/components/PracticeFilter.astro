@@ -1,0 +1,20 @@
+---
+---
+
+<div class="toolbar practice-filter">
+  <span class="practice-label">Protocol:</span>
+  <label><input type="checkbox" id="pf-runs" /> Repeat Runs</label>
+  <label><input type="checkbox" id="pf-seeds" /> Seeds</label>
+  <label><input type="checkbox" id="pf-prompts" /> Prompts</label>
+  <label><input type="checkbox" id="pf-code" /> Code</label>
+  <label><input type="checkbox" id="pf-modelver" /> Dated Model</label>
+  <label><input type="checkbox" id="pf-coord_metric" /> Coord Metric</label>
+</div>
+
+<script>
+  const keys = ['runs','seeds','prompts','code','modelver','coord_metric'];
+  keys.forEach(k => {
+    const cb = document.getElementById('pf-' + k) as HTMLInputElement;
+    if (cb) cb.addEventListener('change', () => window.dispatchEvent(new CustomEvent('filter')));
+  });
+</script>

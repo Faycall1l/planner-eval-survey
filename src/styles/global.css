@@ -421,3 +421,127 @@ tbody tr:hover {
     padding: 8px 12px;
   }
 }
+
+.compare-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.compare-bar .btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.practice-filter label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.practice-filter input[type="checkbox"] {
+  cursor: pointer;
+}
+
+.practice-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.gap-matrix-wrap {
+  overflow-x: auto;
+}
+
+.gap-matrix {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.gap-matrix th, .gap-matrix td {
+  padding: 10px 12px;
+  text-align: center;
+  border: 1px solid var(--border);
+}
+
+.gap-matrix thead th {
+  background: var(--bg-alt);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.gap-matrix tbody th {
+  background: var(--bg-alt);
+  font-weight: 600;
+  text-align: left;
+  white-space: nowrap;
+  color: var(--text);
+}
+
+.compare-modal {
+  max-width: 1000px;
+}
+
+.compare-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.compare-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+
+.compare-card h3 {
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.compare-meta {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.compare-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.compare-item {
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.compare-item.yes {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.compare-item.no {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.compare-bench {
+  font-size: 0.8rem;
+  margin-bottom: 12px;
+}
+
+.compare-card .finding-box {
+  margin-top: 8px;
+}

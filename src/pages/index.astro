@@ -2,9 +2,12 @@
 import Layout from '../layouts/Layout.astro';
 import SearchBar from '../components/SearchBar.astro';
 import FilterBar from '../components/FilterBar.astro';
+import PracticeFilter from '../components/PracticeFilter.astro';
 import PaperTable from '../components/PaperTable.astro';
 import PaperModal from '../components/PaperModal.astro';
+import CompareModal from '../components/CompareModal.astro';
 import StatsGrid from '../components/StatsGrid.astro';
+import GapMatrix from '../components/GapMatrix.astro';
 import papers from '../data/papers.json';
 ---
 
@@ -13,8 +16,11 @@ import papers from '../data/papers.json';
     <StatsGrid papers={papers} />
     <SearchBar />
     <FilterBar />
+    <PracticeFilter />
     <PaperTable papers={papers} />
+    <GapMatrix />
   </div>
   <PaperModal />
+  <CompareModal />
   <script id="papers-data" type="application/json" set:html={JSON.stringify(papers)} />
 </Layout>

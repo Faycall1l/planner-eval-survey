@@ -1,0 +1,73 @@
+---
+---
+
+<div class="modal-overlay" id="compareOverlay" onclick="closeCompareModal(event)">
+  <div class="modal compare-modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Compare Papers</h2>
+      <button class="modal-close" onclick="closeCompareModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="compare-grid" id="compareBody"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function escHtml(s: string): string {
+    const d = document.createElement('div');
+    d.textContent = s || '';
+    return d.innerHTML;
+  }
+
+  const itemDefs = [
+    { key: 'runs', label: 'Repeat Runs' },
+    { key: 'seeds', label: 'Seeds' },
+    { key: 'prompts', label: 'Prompts' },
+    { key: 'code', label: 'Code' },
+    { key: 'modelver', label: 'Dated Model' },
+    { key: 'coord_metric', label: 'Coord Metric' }
+  ];
+
+  function renderCompare(papers: any[]) {
+    const body = document.getElementById('compareBody');
+    if (!body) return;
+    body.innerHTML = papers.map(p => `
+      <div class="compare-card">
+        <h3>${p.url ? `<a href="${p.url}" target="_blank" rel="noopener noreferrer" class="paper-link">${escHtml(p.name)}</a>` : escHtml(p.name)}</h3>
+        <div class="compare-meta"><span class="class-tag c${p.cls}">C${p.cls}</span> ${p.year} | ${escHtml(p.venue || 'Preprint')}</div>
+        <div class="compare-items">
+          ${itemDefs.map(i => {
+            const val = p[i.key];
+            const yes = val === 'True' || val === 'Y';
+            const display = val === 'Y' ? 'Y' : val;
+            return `<span class="compare-item ${yes ? 'yes' : 'no'}">${i.label}: ${display}</span>`;
+          }).join('')}
+        </div>
+        <div class="compare-bench"><strong>Benchmarks:</strong> ${escHtml(p.benchmarks || 'N/A')}</div>
+        <div class="finding-box">
+          <h4>Key Finding</h4>
+          <p>${escHtml(p.finding || 'N/A')}</p>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  (window as any).openCompare = () => {
+    const selected = ((window as any).getSelectedPapers?.() ?? []) as any[];
+    if (selected.length < 2) return;
+    renderCompare(selected);
+    const overlay = document.getElementById('compareOverlay');
+    if (overlay) overlay.classList.add('active');
+  };
+
+  (window as any).closeCompareModal = (e: Event) => {
+    if (!e || (e.target as HTMLElement).id === 'compareOverlay') {
+      document.getElementById('compareOverlay')?.classList.remove('active');
+    }
+  };
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') (window as any).closeCompareModal();
+  });
+</script>

@@ -1,0 +1,55 @@
+---
+import papers from '../data/papers.json';
+
+const items = [
+  { key: 'runs', label: 'Repeat Runs' },
+  { key: 'seeds', label: 'Seeds' },
+  { key: 'prompts', label: 'Prompts' },
+  { key: 'code', label: 'Code' },
+  { key: 'modelver', label: 'Dated Model' },
+  { key: 'coord_metric', label: 'Coord Metric' }
+];
+
+const classes = ['1','2','3','4','5','6'];
+
+function count(cls: string, item: { key: string }): number {
+  return papers.filter(p => p.cls === cls && (p[item.key] === 'True' || p[item.key] === 'Y')).length;
+}
+
+function classTotal(cls: string): number {
+  return papers.filter(p => p.cls === cls).length;
+}
+
+const maxCount = Math.max(1, ...classes.flatMap(c => items.map(i => count(c, i))));
+---
+
+<div class="trend-section">
+  <h2>Gap Matrix</h2>
+  <p class="trend-subtitle">Protocol reporting coverage by class. Cell color intensity shows how many papers in each class report each item.</p>
+  <div class="gap-matrix-wrap">
+    <table class="gap-matrix">
+      <thead>
+        <tr>
+          <th></th>
+          {items.map(i => <th>{i.label}</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {classes.map(c => (
+          <tr>
+            <th>Class {c} ({classTotal(c)})</th>
+            {items.map(i => {
+              const n = count(c, i);
+              const intensity = n / maxCount;
+              const bg = `rgba(37, 99, 235, ${0.08 + intensity * 0.92})`;
+              const color = intensity > 0.45 ? '#fff' : 'var(--text)';
+              return (
+                <td style={`background: ${bg}; color: ${color};`}>{n}</td>
+              );
+            })}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>

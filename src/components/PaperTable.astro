@@ -7,6 +7,13 @@ interface Paper {
   venue: string;
   benchmarks: string;
   url: string;
+  runs: string;
+  seeds: string;
+  prompts: string;
+  code: string;
+  modelver: string;
+  coord_metric: string;
+  finding: string;
 }
 
 interface Props {
@@ -16,10 +23,16 @@ interface Props {
 const { papers } = Astro.props;
 ---
 
+<div class="compare-bar">
+  <span id="compareCount">0 selected</span>
+  <button class="btn" id="compareBtn" disabled>Compare (2-3)</button>
+</div>
+
 <div class="table-container">
   <table>
     <thead>
       <tr>
+        <th></th>
         <th data-sort="name">Paper</th>
         <th data-sort="cls">Class</th>
         <th data-sort="year">Year</th>
@@ -30,6 +43,7 @@ const { papers } = Astro.props;
     <tbody id="tableBody">
       {papers.map(paper => (
         <tr data-pid={paper.pid} onClick={`showDetail('${paper.pid}')`}>
+          <td><input type="checkbox" onclick={`event.stopPropagation(); toggleSelect('${paper.pid}', this.checked)`} /></td>
           <td>{paper.url ? (
             <a href={paper.url} target="_blank" rel="noopener noreferrer" class="paper-link" onclick="event.stopPropagation()"><strong>{paper.name}</strong></a>
           ) : (
@@ -51,6 +65,7 @@ const { papers } = Astro.props;
   let currentPapers = [...papers];
   let sortKey = 'year';
   let sortDir = 'desc';
+  const selectedPapers = new Set();
 
   const classNames: Record<string, string> = {
     '1': 'Formal Plan Validity',
@@ -60,6 +75,8 @@ const { papers } = Astro.props;
     '5': 'Efficiency and Cost',
     '6': 'Coordination Structure'
   };
+
+  const practiceItems = ['runs','seeds','prompts','code','modelver','coord_metric'];
 
   function escHtml(s: string): string {
     const d = document.createElement('div');
@@ -71,17 +88,18 @@ const { papers } = Astro.props;
     const tbody = document.getElementById('tableBody');
     if (!tbody) return;
     if (data.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="5"><div class="no-results">No papers match the current filters.</div></td></tr>';
+      tbody.innerHTML = '<tr><td colspan="6"><div class="no-results">No papers match the current filters.</div></td></tr>';
       return;
     }
     tbody.innerHTML = data.map(p => `
       <tr data-pid="${p.pid}" onclick="showDetail('${p.pid}')">
-          <td>
-            ${p.url
-              ? `<a href="${p.url}" target="_blank" rel="noopener noreferrer" class="paper-link" onclick="event.stopPropagation()"><strong>${escHtml(p.name)}</strong></a>`
-              : `<strong>${escHtml(p.name)}</strong>`
-            }
-          </td>
+        <td><input type="checkbox" ${selectedPapers.has(p.pid) ? 'checked' : ''} onclick="event.stopPropagation(); toggleSelect('${p.pid}', this.checked)" /></td>
+        <td>
+          ${p.url
+            ? `<a href="${p.url}" target="_blank" rel="noopener noreferrer" class="paper-link" onclick="event.stopPropagation()"><strong>${escHtml(p.name)}</strong></a>`
+            : `<strong>${escHtml(p.name)}</strong>`
+          }
+        </td>
         <td><span class="class-tag c${p.cls}">C${p.cls}</span></td>
         <td class="year-text">${p.year}</td>
         <td class="venue-text">${escHtml(p.venue || 'Preprint')}</td>
@@ -116,6 +134,12 @@ const { papers } = Astro.props;
         const text = (p.name + ' ' + (p.benchmarks || '')).toLowerCase();
         if (!text.includes(search)) return false;
       }
+      for (const item of practiceItems) {
+        const cb = document.getElementById('pf-' + item) as HTMLInputElement;
+        if (cb && cb.checked) {
+          if (!(p[item] === 'True' || p[item] === 'Y')) return false;
+        }
+      }
       return true;
     });
 
@@ -123,7 +147,25 @@ const { papers } = Astro.props;
     renderTable(currentPapers);
   }
 
+  function toggleSelect(pid: string, checked: boolean) {
+    if (checked) selectedPapers.add(pid);
+    else selectedPapers.delete(pid);
+    updateCompareBar();
+  }
+
+  function updateCompareBar() {
+    const count = selectedPapers.size;
+    const countEl = document.getElementById('compareCount');
+    const btn = document.getElementById('compareBtn') as HTMLButtonElement;
+    if (countEl) countEl.textContent = count + ' selected';
+    if (btn) btn.disabled = count < 2 || count > 3;
+  }
+
   (window as any).getFilteredPapers = () => currentPapers;
+
+  (window as any).getSelectedPapers = () => {
+    return Array.from(selectedPapers).map(pid => papers.find(p => p.pid === pid)).filter(Boolean);
+  };
 
   (window as any).showDetail = (pid: string) => {
     const p = papers.find(x => x.pid === pid);
@@ -160,6 +202,13 @@ const { papers } = Astro.props;
       document.getElementById('modalOverlay')?.classList.remove('active');
     }
   };
+
+  const compareBtn = document.getElementById('compareBtn') as HTMLButtonElement;
+  compareBtn.addEventListener('click', () => {
+    if (selectedPapers.size >= 2 && selectedPapers.size <= 3) {
+      (window as any).openCompare();
+    }
+  });
 
   window.addEventListener('search', filterPapers);
   window.addEventListener('filter', filterPapers);
