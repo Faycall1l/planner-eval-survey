@@ -153,6 +153,8 @@ const { papers } = Astro.props;
     updateCompareBar();
   }
 
+  (window as any).toggleSelect = toggleSelect;
+
   function updateCompareBar() {
     const count = selectedPapers.size;
     const countEl = document.getElementById('compareCount');
@@ -212,6 +214,7 @@ const { papers } = Astro.props;
 
   window.addEventListener('search', filterPapers);
   window.addEventListener('filter', filterPapers);
+  updateCompareBar();
 
   document.querySelectorAll('th[data-sort]').forEach(th => {
     th.addEventListener('click', () => {
